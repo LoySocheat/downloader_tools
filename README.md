@@ -60,7 +60,7 @@ This script is designed to download videos from multiple platforms, including **
 1. Clone the repository to your local machine:
 
    ```bash
-   git clone
+   git clone https://github.com/LoySocheat/downloader_tools
    ```
 
 2. Navigate to the project directory:
