@@ -1,6 +1,5 @@
 import os
 import requests
-import subprocess
 import string
 import sys
 import platform
