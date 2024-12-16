@@ -4,6 +4,7 @@ import re
 import time
 import instaloader
 import kuaishou_download
+import yt_dlp
 
 def get_response(url):
     """Get the response text from a URL."""
@@ -112,6 +113,22 @@ def download_multiple_videos_tiktok(video_urls, platform):
                 download_single_instagram_video(video_url)
         except Exception as e:
             print(f"[Error] An error occurred while downloading video from {video_url}: {e}")
+            
+def download_youtube_video(youtube_url, save_path):
+    try:
+        ydl_opts = {
+            'format': 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best',
+            'outtmpl': f'{save_path}/%(title)s.%(ext)s',
+        }
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            title = ydl.extract_info(youtube_url, download=False).get('title')
+            description = ydl.extract_info(youtube_url, download=False).get('description').split("\n")[0]
+            info_dict = ydl.extract_info(youtube_url, download=True)
+            filename = ydl.prepare_filename(info_dict)
+            return filename, title, description
+    except Exception as e:
+        print(f"Error downloading video from URL {youtube_url}: {str(e)}")
+        return None
 
 def read_urls_from_file(file_path):
     """Read video URLs from a .txt file."""
@@ -183,13 +200,15 @@ def get_user_choice():
         print("4. Download multiple Instagram videos from a .txt file")
         print("5. Download a single Kuaishou video")
         print("6. Download multiple Kuaishou videos from a .txt file")
-        print("7. Exit")
+        print("7. Download a single Youtube video")
+        print("8. Download multiple Youtube videos from a .txt file")
+        print("9. Exit")
 
-        choice = input("Enter your choice (1, 2, 3, 4, 5, 6 or 7): ")
-        if choice in ['1', '2', '3', '4', '5', '6', '7']:
+        choice = input("Enter your choice (1, 2, 3, 4, 5, 6, 7, 8 or 9): ")
+        if choice in ['1', '2', '3', '4', '5', '6', '7', '8', '9']:
             return choice
         else:
-            print("[Error] Invalid choice. Please enter 1, 2, 3, 4, 5, 6 or 7.")
+            print("[Error] Invalid choice. Please enter 1, 2, 3, 4, 5, 6, 7, 8 or 9.")
         
 def main():
     """Main function to handle user input and video downloads."""
@@ -232,7 +251,36 @@ def main():
             else: 
                 print("[Error] No URLs found in the file.")
 
+        elif choice == '5':
+            video_url = input("Enter the Kuaishou URL: ")
+            kuaishou_download.kuaishou(video_url, 'kuaishou')
+            
+        elif choice == '6':
+            print("Example: Kuaishou URL\nhttps://v.kuaishou.com/XXXXXX")
+            file_path = input("Enter the path to your .txt file containing Kauishou URLs: ")
+            video_urls = read_urls_from_file(file_path)
+            if video_urls:
+                for url in video_urls:
+                    kuaishou_download.kuaishou(url, 'kuaishou')
+            else: 
+                print("[Error] No URLs found in the file.")
+                
         elif choice == '7':
+            print("Example: Youtube URL\nhttps://www.youtube.com/watch?v=XXXXXX")
+            youtube_url = input("Enter the Youtube video URL: ")
+            download_youtube_video(youtube_url, "Youtube")
+            
+        elif choice == '8':
+            print("Example: Youtube URL\nhttps://www.youtube.com/watch?v=XXXXXX")
+            file_path = input("Enter the path to your .txt file containing Youtube URLs: ")
+            video_urls = read_urls_from_file(file_path)
+            if video_urls:
+                for url in video_urls:
+                    download_youtube_video(url, "Youtube")
+            else:
+                print("[Error] No URLs found in the file.")
+
+        elif choice == '9':
             print("Exiting the program.")
             break
 

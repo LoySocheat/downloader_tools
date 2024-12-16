@@ -6,6 +6,7 @@ This script is designed to download videos from multiple platforms, including **
 - Download TikTok videos using TikTok URL.
 - Download Instagram videos or images.
 - Download Kuaishou videos.
+- Download Youtube videos.
 - Batch download multiple videos from a `.txt` file.
 
 ## How to Use
@@ -36,7 +37,14 @@ This script is designed to download videos from multiple platforms, including **
 6. **Multiple Kuaishou Videos:**
    - Store Kuaishou URLs in a `.txt` file, and follow the prompts to batch download.
 
-7. **Exit the Program:**
+7. **Single Youtube Video Download:**
+   - Choose the option to download a single Youtube video.
+   - Input the Youtube URL when prompted, and the video will be saved in the `./youtube` folder.
+
+8. **Multiple Youtube Videos:**
+   - Store Youtube URLs in a `.txt` file, and follow the prompts to batch download.
+
+9. **Exit the Program:**
    - Select the exit option to terminate the program.
 
 ### Prerequisites
