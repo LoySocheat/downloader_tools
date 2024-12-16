@@ -3,3 +3,4 @@ beautifulsoup4
 moviepy
 python-dotenv
 instaloader
+yt-dlp==2024.8.6
